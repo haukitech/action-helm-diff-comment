@@ -1,0 +1,38 @@
+name: Helm Diff Commment
+description: Post a PR comment with a helm diff.
+inputs:
+  diff-content:
+    description: The diff output
+    required: true
+  environment-name:
+    description: Name of the environment.
+    required: true
+outputs: {}
+runs:
+  using: composite
+  steps:
+    - name: Create comment message
+      shell: bash
+      id: create-comment-message
+      run: |
+        cat <<EOF >> "${GITHUB_OUTPUT}"
+        message<<EOM
+        ## Environment: ${{ inputs.environment-name }}
+
+        <details>
+        <summary>
+        helmfile diff output
+        </summary>
+
+        \`\`\`
+        ${{ inputs.diff-content }}
+        \`\`\`
+        
+        </details>
+        EOM
+        EOF
+    - name: Comment pull request
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        message: |
+          ${{ steps.create-comment-message.outputs.message }}
