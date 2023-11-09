@@ -24,7 +24,7 @@ runs:
         helmfile diff output
         </summary>
 
-        \`\`\`
+        \`\`\`diff
         ${{ inputs.diff-content }}
         \`\`\`
         
