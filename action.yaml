@@ -36,14 +36,14 @@ runs:
         EOF
 
     - name: Comment pull request
-      if: ${{ inputs.pr-number }}
+      if: inputs.pr-number == ''
       uses: thollander/actions-comment-pull-request@v2
       with:
         message: |
           ${{ steps.create-comment-message.outputs.message }}
 
     - name: Comment pull request
-      if: "${{ inputs.pr-number != '' }}"
+      if: inputs.pr-number
       uses: thollander/actions-comment-pull-request@v2
       with:
         message: |
