@@ -7,6 +7,9 @@ inputs:
   environment-name:
     description: Name of the environment.
     required: true
+  pr-number:
+    description: The number of pull request
+    required: false
 outputs: {}
 runs:
   using: composite
@@ -31,8 +34,18 @@ runs:
         </details>
         EOM
         EOF
+
     - name: Comment pull request
+      if: ${{ inputs.pr-number }}
       uses: thollander/actions-comment-pull-request@v2
       with:
         message: |
           ${{ steps.create-comment-message.outputs.message }}
+
+    - name: Comment pull request
+      if: "${{ inputs.pr-number != '' }}"
+      uses: thollander/actions-comment-pull-request@v2
+      with:
+        message: |
+          ${{ steps.create-comment-message.outputs.message }}
+        pr_number: ${{ inputs.pr-number }}
