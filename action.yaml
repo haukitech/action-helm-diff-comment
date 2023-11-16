@@ -7,6 +7,9 @@ inputs:
   environment-name:
     description: Name of the environment.
     required: true
+  helm-action:
+    description: The name of the helm action that produces the output
+    required: true  
   pr-number:
     description: The number of pull request
     required: false
@@ -24,7 +27,7 @@ runs:
 
         <details>
         <summary>
-        helmfile diff output
+        Helm ${{ inputs.helm-action }} output
         </summary>
 
         \`\`\`diff
