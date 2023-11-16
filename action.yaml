@@ -10,9 +10,7 @@ inputs:
   helm-action:
     description: The name of the helm action that produces the output
     required: true  
-  pr-number:
-    description: The number of pull request
-    required: false
+
 outputs: {}
 runs:
   using: composite
@@ -65,7 +63,7 @@ runs:
       with:
         message: |
           ${{ steps.create-comment-message.outputs.message }}
-        pr-number: ${{ steps.get-pr-number.outputs.result }}
+        pr_number: ${{ steps.get-pr-number.outputs.result }}
 
     - name: Comment pull request
       if: github.ref_name != github.event.repository.default_branch
