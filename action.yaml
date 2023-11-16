@@ -35,17 +35,33 @@ runs:
         EOM
         EOF
 
-    - name: Comment pull request
-      if: inputs.pr-number == ''
+    - name: Get pull request number
+      if: github.ref_name == github.event.repository.default_branch
+      uses: actions/github-script@v7
+      id: my-script
+      with:
+        result-encoding: string
+        retries: 3
+        script: |
+          const response = await github.rest.repos.listPullRequestsAssociatedWithCommit({
+            owner: "${{ github.repository_owner }}",
+            repo: "${{ github.repository }}".split("/").pop(),
+            commit_sha: "${{ github.sha }}",
+          });
+          return response.data.pop().number;
+
+    - name: Comment pull request using PR number
+      if: github.ref_name == github.event.repository.default_branch
       uses: thollander/actions-comment-pull-request@v2
       with:
         message: |
           ${{ steps.create-comment-message.outputs.message }}
+        pr-number: ${{ steps.my-script.outputs.result }}
 
     - name: Comment pull request
-      if: inputs.pr-number
+      if: github.ref_name != github.event.repository.default_branch
       uses: thollander/actions-comment-pull-request@v2
       with:
         message: |
-          ${{ steps.create-comment-message.outputs.message }}
-        pr_number: ${{ inputs.pr-number }}
+          ${{ steps.create-comment-message.outputs.message }}    
+    
