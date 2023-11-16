@@ -1,11 +1,11 @@
-name: Helm Diff Commment
-description: Post a PR comment with a helm diff.
+name: Helm Action Comment
+description: Post a comment message with a Helm output on a pull request associated with the corresponding Helm action.
 inputs:
-  diff-content:
-    description: The diff output
+  helm-output:
+    description: The Helm action output
     required: true
   environment-name:
-    description: Name of the environment.
+    description: Name of the environment
     required: true
   helm-action:
     description: The name of the helm action that produces the output
@@ -29,7 +29,7 @@ runs:
         </summary>
 
         \`\`\`diff
-        ${{ inputs.diff-content }}
+        ${{ inputs.helm-output }}
         \`\`\`
         
         </details>
