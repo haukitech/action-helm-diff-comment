@@ -54,11 +54,13 @@ runs:
             return prNumber;
           }
           else {
-            throw new Error("Could not find pull request associated with the latest commit");
+            console.log(
+              "Could not find pull request associated with the latest commit. Someone must have committed directly to the default branch ;("
+            );
           }
           
     - name: Comment pull request using PR number
-      if: github.ref_name == github.event.repository.default_branch
+      if: ${{ github.ref_name == github.event.repository.default_branch && steps.get-pr-number.outputs.result }}
       uses: thollander/actions-comment-pull-request@v2
       with:
         message: |
