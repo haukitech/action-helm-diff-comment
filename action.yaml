@@ -19,6 +19,8 @@ runs:
       shell: bash
       id: create-comment-message
       run: |
+        echo ${{ github.ref_name }}
+        echo ${{ github.event.repository.default_branch }}
         cat <<EOF >> "${GITHUB_OUTPUT}"
         message<<EOM
         ## Environment: ${{ inputs.environment-name }}
