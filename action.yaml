@@ -61,7 +61,7 @@ runs:
           }
           
     - name: Comment pull request using PR number
-      if: ${{ github.ref_name == github.event.repository.default_branch && steps.get-pr-number.outcome != failure }}
+      if: ${{ github.ref_name == github.event.repository.default_branch && steps.get-pr-number.outcome != "failure" }}
       uses: thollander/actions-comment-pull-request@v2
       with:
         message: |
